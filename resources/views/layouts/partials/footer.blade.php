@@ -42,3 +42,4 @@
 <script src="{{url('adminlte/plugins/dropzone/min/dropzone.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{url('adminlte/dist/js/adminlte.min.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.0/dist/xlsx.full.min.js"></script>

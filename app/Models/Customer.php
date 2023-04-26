@@ -14,7 +14,7 @@ class Customer extends Model
     public function getUserID($userID)
     {
         $users = DB::table('users')
-            ->select('username', 'password', 'name')
+            ->select('username', 'password', 'name', 'userid')
             ->where('username', $userID)->first();
 
         if ($users){

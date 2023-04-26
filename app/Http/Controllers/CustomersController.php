@@ -70,7 +70,8 @@ class CustomersController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             session()->push('userCredential', [
-                'nama' => $this->objCustomer->getUserID($request->post('username'))->name
+                'nama' => $this->objCustomer->getUserID($request->post('username'))->name,
+                'iduser' => $this->objCustomer->getUserID($request->post('username'))->userid
             ]);
 
             return redirect()->intended('home');

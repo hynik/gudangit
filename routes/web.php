@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\ProsesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,10 +34,20 @@ Route::middleware(['authAdmin'])->group(function () {
         Route::get('/dashboard', 'pageDashboard');
         Route::get('/data-barang', 'pageBarang');
         Route::get('/data-barang/{noinventaris}', 'detailBarang');
-        Route::get('/data-barang/dist/{noinventaris}', 'distribusiBarang');
         Route::get('/barang-masuk', 'barangMasuk');
         Route::get('/data-exim', 'dataExim');
+        Route::get('/data-baru', 'dataBaru');
         Route::get('/pengaturan', 'pengaturan');
+
+    });
+    
+    Route::controller(ProsesController::class)->group(function(){
+        
+        Route::post('data-barang/{noinventaris}/dist', 'postDistribusi');
+        Route::post('data-baru/upload', 'postUpload');
+        Route::get('data-baru/import', 'importAsset');
+        Route::get('kdBarang', 'kodeBarang');
+        Route::get('kdBarang/{kd}', 'kodeBarang');
     });
 });
 

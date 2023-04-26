@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\Customer;
 use App\Models\Distribusi;
+use App\Models\KodeBarang;
 use App\Models\StatusBarang;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PagesController extends Controller
 {
@@ -17,11 +16,6 @@ class PagesController extends Controller
     {
         $this->objCustomer = new Customer();
 
-    }
-
-    private function idParam($index, $request){
-        
-        return str_replace('-', '/', $request->segments()[$index]);
     }
 
     public function pageDashboard(){
@@ -40,7 +34,7 @@ class PagesController extends Controller
 
         return view('pages.barang', [
             'title' => 'Data Barang',
-            'dataBarang' => $this->objCustomer->dataBarang()
+            'dataBarang' => StatusBarang::with(['barang'])->get()
         ]);
     }
 
@@ -49,9 +43,10 @@ class PagesController extends Controller
         return view('pages.details_data.item_barang', [
             'title' => 'Barang Iventaris '. $inventaris_id,
             'inventaris' => $inventaris_id,
-            'dataSpesifik' => StatusBarang::with(['barang', 'userDis', 'distribusi', 'katBarang'])
+            'dataSpesifik' => StatusBarang::with(['barang', 'userDis', 'distribusi', 'katBarang', 'barang.jenisBarang'])
             ->where('id_inventaris', '=', $inventaris_id)
             ->first(),
+            'listDistribusi' => Distribusi::get()
         ]);
     }
 
@@ -60,12 +55,11 @@ class PagesController extends Controller
             'title' => 'Rekam Barang Masuk'
         ]);
     }
-    public function distribusiBarang($inventaris){
 
-        $inventaris_id = str_replace('-', '/', $inventaris);
-        return view('pages.distribusi', [
-            'title' => 'Distribusi Barang',
-            'dataSpesifik' => Barang::with([])->first()
+    public function dataBaru(){
+        return view('pages.databaru', [
+            'title' => 'Buat Nomor Iventarisasi Baru',
+            'kdBarang' => KodeBarang::get()
         ]);
     }
 

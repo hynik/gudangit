@@ -25,42 +25,50 @@
               <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                   <li class="nav-item">
                       <a href="{{url('dashboard')}}" class="nav-link">
-                          <i class="nav-icon fas fa-th"></i>
-                          <p>
-                              Dashboard
-                          </p>
+                          <div class="row">
+                              <div class="col-2"><i class="fa-solid fa-house fa-lg"></i></div>
+                              <div class="col">
+                                  <p>Beranda</p>
+                              </div>
+                          </div>
                       </a>
                   </li>
                   <li class="nav-item">
                       <a href="{{url('data-barang')}}" class="nav-link">
-                          <i class="nav-icon fas fa-th"></i>
-                          <p>
-                              Barang
-                          </p>
+                          <div class="row">
+                              <div class="col-2"><i class="fa-solid fa-box fa-lg"></i></div>
+                              <div class="col">
+                                  <p>Barang Asset IT</p>
+                              </div>
+                          </div>
                       </a>
                   </li>
                   <li class="nav-item">
                       <a href="{{url('barang-masuk')}}" class="nav-link">
-                          <i class="nav-icon fas fa-th"></i>
-                          <p>
-                              Barang Baru Masuk
-                          </p>
+                          <div class="row d-flex">
+                              <div class="col-2"><i class="fa-solid fa-dolly fa-lg"></i></div>
+                              <div class="col">
+                                  <p>Barang Baru Masuk</p>
+                              </div>
+                          </div>
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{url('data-exim')}}" class="nav-link">
+                      <a href="{{url('data-iventaris')}}" class="nav-link">
                           <i class="nav-icon fas fa-th"></i>
                           <p>
-                              Import / Export
+                              Buat Nomor Inventaris
                           </p>
                       </a>
                   </li>
                   <li class="nav-item">
                       <a href="{{url('pengaturan')}}" class="nav-link">
-                          <i class="fa fa-cog fa-lg"></i>
-                          <p class="ml-2">
-                              Pengaturan
-                          </p>
+                          <div class="row d-flex">
+                              <div class="col-2"><i class="fa fa-cog fa-lg"></i></div>
+                              <div class="col">
+                                  <p>Pengaturan</p>
+                              </div>
+                          </div>
                       </a>
                   </li>
 

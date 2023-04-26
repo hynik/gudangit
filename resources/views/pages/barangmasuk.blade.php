@@ -41,7 +41,7 @@
 </div>
 <div class="row mb-3">
     <div class="col-3">
-        <button class="btn btn-outline-primary">Tambah Barang</button>
+        <a href="{{url('data-baru')}}" class="btn btn-outline-primary">Tambah Barang</a>
     </div>
 </div>
 <div class="row">

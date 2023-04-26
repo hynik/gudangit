@@ -17,7 +17,7 @@ class StatusBarang extends Model{
     }
 
     public function distribusi(){
-        return $this->hasOne(Distribusi::class, 'id_distribusi', 'id_distribusi');
+        return $this->hasMany(Distribusi::class, 'id_distribusi', 'id_distribusi');
     }
 
     public function katBarang(){

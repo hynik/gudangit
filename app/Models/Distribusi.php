@@ -12,6 +12,9 @@ class Distribusi extends Model{
         return $this->belongsTo(StatusBarang::class);
     }
 
+    public function barangDistribusi(){
+        return $this->belongsTo(Barang::class);
+    }
 }
 
 ?>

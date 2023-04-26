@@ -16,6 +16,9 @@ class Barang extends Model{
         return $this->hasMany(JenisBarang::class, 'id_jenis', 'id_jenis');
     }
 
+    public function timDistribusi(){
+        return $this->hasMany(Distribusi::class, 'id_distribusi', 'id_distribusi');
+    }
 }
 
 ?>
