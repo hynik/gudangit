@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class StatusBarang extends Model{
 
     protected $table = 'status_barang';
+    protected $fillable = ['id_kat', 'id_inventaris', 'id_distribusi', 'userid', 'keterangan', 'update_at'];
     
     public function barang(){
         return $this->hasMany(Barang::class, 'id_inventaris', 'id_inventaris');

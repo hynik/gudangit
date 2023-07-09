@@ -24,7 +24,7 @@
           <nav class="mt-2">
               <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                   <li class="nav-item">
-                      <a href="{{url('dashboard')}}" class="nav-link">
+                      <a href="{{url('dashboard')}}" class="nav-link {{ (Request::segment(1) == 'dashboard') ? 'active' : '' }}">
                           <div class="row">
                               <div class="col-2"><i class="fa-solid fa-house fa-lg"></i></div>
                               <div class="col">
@@ -34,7 +34,7 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{url('data-barang')}}" class="nav-link">
+                      <a href="{{url('data-barang')}}" class="nav-link {{ (Request::segment(1) == 'data-barang') ? 'active' : '' }}">
                           <div class="row">
                               <div class="col-2"><i class="fa-solid fa-box fa-lg"></i></div>
                               <div class="col">
@@ -44,7 +44,7 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{url('barang-masuk')}}" class="nav-link">
+                      <a href="{{url('barang-masuk')}}" class="nav-link {{ (Request::segment(1) == 'barang-masuk') ? 'active' : '' }}">
                           <div class="row d-flex">
                               <div class="col-2"><i class="fa-solid fa-dolly fa-lg"></i></div>
                               <div class="col">
@@ -54,15 +54,25 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{url('data-iventaris')}}" class="nav-link">
+                      <a href="{{url('tambah-kat')}}" class="nav-link {{ (Request::segment(1) == 'tambah-kat') ? 'active' : '' }}">
+                          <div class="row d-flex">
+                              <div class="col-2"><i class="fa-solid fa-dolly fa-lg"></i></div>
+                              <div class="col">
+                                  <p>Tambah Kategori Aset</p>
+                              </div>
+                          </div>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="{{url('his-pengguna')}}" class="nav-link {{ (Request::segment(1) == 'his-pengguna') ? 'active' : '' }}">
                           <i class="nav-icon fas fa-th"></i>
                           <p>
-                              Buat Nomor Inventaris
+                              Aktifitas Pengguna
                           </p>
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{url('pengaturan')}}" class="nav-link">
+                      <a href="{{url('pengaturan')}}" class="nav-link {{ (Request::segment(1) == 'pengaturan') ? 'active' : '' }}">
                           <div class="row d-flex">
                               <div class="col-2"><i class="fa fa-cog fa-lg"></i></div>
                               <div class="col">

@@ -71,7 +71,7 @@
                     <div class="row mb-4">
                         <div class="col-auto">
                             <div class="custom-control custom-radio">
-                                <input class="custom-control-input custom-control-input-outline custom-control-input-primary" type="radio" id="customRadioMasuk" name="customRadio" value="masuk" <?= ($dataSpesifik->id_kat == 2 ) ? 'disabled checked' : ($dataSpesifik->keterangan == 'stock rusak' ? 'disabled' : '') ?>>
+                                <input class="custom-control-input custom-control-input-outline custom-control-input-primary" type="radio" id="customRadioMasuk" name="customRadio" value="masuk" <?= ($dataSpesifik->id_kat == 2) ? 'disabled checked' : ($dataSpesifik->keterangan == 'stock rusak' ? 'disabled' : '') ?>>
                                 <label for="customRadioMasuk" class="custom-control-label">Masuk</label>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                         </div>
                         <div class="col-auto">
                             <div class="custom-control custom-radio">
-                                <input class="custom-control-input custom-control-input-outline custom-control-input-warning" type="radio" id="customRadioDist" name="customRadio" value="dist" <?= ($dataSpesifik->id_kat == 4 ) ? 'disabled checked' : ($dataSpesifik->keterangan == 'stock rusak' ? 'disabled' : '') ?>>
+                                <input class="custom-control-input custom-control-input-outline custom-control-input-warning" type="radio" id="customRadioDist" name="customRadio" value="dist" <?= ($dataSpesifik->id_kat == 4) ? 'disabled checked' : ($dataSpesifik->keterangan == 'stock rusak' ? 'disabled' : '') ?>>
                                 <label for="customRadioDist" class="custom-control-label">Distribusi</label>
                             </div>
                         </div>
@@ -116,4 +116,22 @@
         </div>
     </div>
 </div>
+@endsection
+@section('custom-script')
+<script>
+    if ($("#customRadioMasuk").is(":checked")) {
+        $("#selectorDist").attr("disabled", true);
+    }
+
+    $("#customRadioMasuk").click(() => {
+        $("#selectorDist").attr("disabled", true);
+    });
+    $("#customRadioKeluar").click(() => {
+        $("#selectorDist").attr("disabled", true);
+    });
+
+    $("#customRadioDist").click(() => {
+        $("#selectorDist").attr("disabled", false);
+    });
+</script>
 @endsection

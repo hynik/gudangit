@@ -3,41 +3,72 @@
 namespace App\Imports;
 
 use App\Models\Asset;
-use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Concerns\ToModel;
+use App\Models\StatusBarang;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+// use Illuminate\Support\Facades\Validator;
 
-class AssetImport implements ToModel, WithValidation, WithHeadingRow
+class AssetImport implements ToCollection, WithHeadingRow, WithValidation
 {
     /**
     * @param array $row
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-    public function model(array $row)
+
+    public function collection(Collection $rows)
     {
-        // return new Asset([
-        //     'id_inventaris'=> $row[1],
-        //     'id_jenis' => $row[2],
-        //     'nama_merk' => $row[3],
-        //     'pengadaan' => date('Y-m-d')
-        // ]);
+        //  Validator::make($rows->toArray(), [
+        //      '*.no' => 'required',
+        //      '*.id_inventaris' => 'required',
+        //      '*.id_jenis' => 'required',
+        //      '*.nama_merk' => 'required',
+        //  ])->validate();
+  
+        foreach ($rows as $row) {
 
-        // $data = Asset::get('id_inventaris');
+            // dd($row['id_inventaris']);
 
-        // foreach($data->toArray() as $d){
-        //     // print_r($d['id_inventaris']);
-        //     if (in_array('HS/0001/2019', $d)){
-        //         echo "suda ada!";
-        //     }
-        // }
+            $cekid = Asset::select('id_inventaris')->where('id_inventaris', '=', $row['id_inventaris'])->get();
+            
+            if (count($cekid) > 0){
+                $id = "";
+                foreach($cekid as $existid){
+                    $id .= $existid."\n";
+                }
+                return back()->with('warning', 'ID Inventaris sudah ada di database! '.$id);
+            }else{
+                
+                Asset::create([
+                    'id_inventaris' => $row['id_inventaris'],
+                    'id_jenis' => $row['id_jenis'],
+                    'nama_merk' => $row['nama_merk'],
+                    'pengadaan' => date('Y-m-d')
+                ]);
+                StatusBarang::create([
+                    'id_kat' => 2,
+                    'id_inventaris' => $row['id_inventaris'],
+                    'id_distribusi' => null,
+                    'userid' => session()->get('userCredential')[0]['iduser'],
+                    'keterangan' => 'stock baru',
+                    'updated_at' => date('Y-m-d')
+                ]);
+
+            }
+            
+        }
+        return back()->with('success', 'Data Berhasil di Import.');
     }
 
     public function rules(): array
     {
-        return [
-            'id_inventaris' => Rule::in(['HS/0001/2019']),
+        return[
+            'no' => 'required',
+            'id_inventaris' => 'required',
+            'id_jenis' => 'required',
+            'nama_merk' => 'required',
         ];
     }
 }

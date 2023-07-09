@@ -11,6 +11,7 @@ class JenisBarang extends Model{
     public function barang(){
         return $this->belongsTo(Barang::class);
     }
+
 }
 
 ?>

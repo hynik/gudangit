@@ -35,8 +35,9 @@ Route::middleware(['authAdmin'])->group(function () {
         Route::get('/data-barang', 'pageBarang');
         Route::get('/data-barang/{noinventaris}', 'detailBarang');
         Route::get('/barang-masuk', 'barangMasuk');
-        Route::get('/data-exim', 'dataExim');
         Route::get('/data-baru', 'dataBaru');
+        Route::post('/cetak_pdf', 'cetak_pdf');
+        Route::get('/data-aset/barcode/{noinventaris}', 'barcode');
         Route::get('/pengaturan', 'pengaturan');
 
     });
@@ -45,6 +46,8 @@ Route::middleware(['authAdmin'])->group(function () {
         
         Route::post('data-barang/{noinventaris}/dist', 'postDistribusi');
         Route::post('data-baru/upload', 'postUpload');
+        Route::post('data-baru/gen', 'postGen');
+        Route::get('data-master', 'dataMasterAset');
         Route::get('data-baru/import', 'importAsset');
         Route::get('kdBarang', 'kodeBarang');
         Route::get('kdBarang/{kd}', 'kodeBarang');
