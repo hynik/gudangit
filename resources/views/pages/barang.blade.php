@@ -36,15 +36,21 @@
         </div>
     </div>
 </div>
+
 <div class="row mb-2">
     <div class="col">
         <div class="input-group">
-            <input type="text" class="form-control" id="cari" placeholder="Pencarian" />
+            <input type="text" class="form-control" id="cari" placeholder="Pencarian Berdasarkan Nama dan Kode" />
             <div class="input-group-append">
                 <button class="btn-cari btn btn-primary btn-sm"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </span>
             </div>
         </div>
+    </div>
+</div>
+<div class="row mb-1">
+    <div class="col">
+        <span class="text-dark">Filter berdasarkan waktu pengadaan.</span>
     </div>
 </div>
 <div class="row mb-2">
@@ -94,33 +100,6 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- @foreach($dataBarang as $data)
-                <tr>
-                    <td>
-                        <div class="custom-control custom-checkbox">
-                            <input class="custom-control-input" type="checkbox" id="customCheckbox{{$data->id_inventaris}}" value="">
-                            <label class="custom-control-label" for="customCheckbox{{$data->id_inventaris}}"></label>
-                        </div>
-                    </td>
-                    <td><a href="{{url('data-barang')}}/<?= str_replace('/', '-', $data->id_inventaris) ?>" class="text-decoration-none">{{$data->id_inventaris}}</a></td>
-                    <td>{{$data->barang[0]->pengadaan}}</td>
-                    <td>{{$data->barang[0]->nama_merk}}</td>
-                    @if ($data->keterangan == "stock baru")
-                    <td><span class="badge badge-success">{{$data->keterangan}}</span></td>
-                    @elseif ($data->keterangan == "stock lama")
-                    <td><span class="badge badge-warning">{{$data->keterangan}}</span></td>
-                    @elseif ($data->keterangan == "stock rusak")
-                    <td><span class="badge badge-danger">{{$data->keterangan}}</span></td>
-                    @else
-                    <td><span class="badge badge-info">{{$data->keterangan}}</span></td>
-                    @endif
-                    <td class="text-center">
-                        <button class="btn btn-outline-primary btnModal" data-toggle="modal" data-target="#barcode-{{str_replace('/', '', $data->id_inventaris)}}">
-                            <i class="fa-solid fa-barcode"></i>
-                        </button>
-                    </td>
-                </tr>
-                @endforeach -->
             </tbody>
         </table>
     </div>
@@ -128,8 +107,8 @@
 
 @endsection
 @section('custom-script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-
     var totalData = 0;
 
     $(document).ready(function() {
@@ -193,18 +172,19 @@
 
             $('.modal-title').text(idAset);
             $('.noinventaris').text(idAset);
+            $('.modal').modal('show');
         });
 
         $('#btn-selects').click(() => {
 
-            if($('#btn-selects').val() == '0'){
+            if ($('#btn-selects').val() == '0') {
                 $('.no').each((idx, elem) => {
                     $(elem).addClass('d-none');
                     $(elem).siblings('#div_ceklist').removeClass('d-none');
                 });
                 $('#btn-selects').attr('value', '1');
-                
-            }else{
+
+            } else {
                 $('.no').each((idx, elem) => {
                     $(elem).removeClass('d-none');
                     $(elem).siblings('#div_ceklist').addClass('d-none');
@@ -214,27 +194,7 @@
 
         });
 
-        $('#btnPDF').click(() => {
 
-            let data = [];
-
-            $('.custom-control-input').each((idx, elem) => {
-                if ($(elem).is(':checked')){
-                    data.push($(elem).val());
-                }
-            });
-
-            $.ajax({
-                url: "{{url('cetak_pdf')}}",
-                type: 'POST',
-                data: {data:data, _token:"{{csrf_token()}}"},
-                dataType: 'JSON',
-                success: function(re){
-                    console.log(re);
-                }
-            });
-
-        });
 
         $('#ceklisAll').change(() => {
             if ($(this).is(":checked")) {
@@ -293,24 +253,27 @@
                         {
                             "data": "pengadaan",
                             "render": (data, type, row, meta) => {
-                                return row.barang[0].pengadaan;
+                                return row.pengadaan;
                             }
                         },
                         {
                             "render": (data, type, row, meta) => {
-                                return row.barang[0].nama_merk;
+                                return row.nama_merk;
                             }
                         },
                         {
                             "render": (data, type, row, meta) => {
-                                if (row.keterangan == "stock baru") {
-                                    return '<span class="badge badge-success">' + row.keterangan + '</span>';
+                                if (row.id_status == 1) {
+                                    return '<span class="badge badge-primary">' + "on Stock" + '</span>';
                                 }
-                                if (row.keterangan == "stock lama") {
-                                    return '<span class="badge badge-warning">' + row.keterangan + '</span>';
+                                if (row.id_status == 2) {
+                                    return '<span class="badge badge-danger">' + "out Stock" + '</span>';
                                 }
-                                if (row.keterangan == "stock rusak") {
-                                    return '<span class="badge badge-danger">' + row.keterangan + '</span>';
+                                if (row.id_status == 3) {
+                                    return '<span class="badge badge-success">' + "distribusi" + '</span>';
+                                }
+                                if (row.id_status == 4) {
+                                    return '<span class="badge badge-warning">' + "rusak" + '</span>';
                                 }
                             }
                         },
@@ -323,15 +286,70 @@
                 });
             }
         });
-        $('#btn-numb').click(() => {
-            $('#btn-numb').attr('id', 'btn-selects');
-            $('.ceklist').each((idx, elem) => {
-                $(elem).hide();
-            });
-            $('.no').each((idx, elem) => {
-                $(elem).show();
-            });
+
+    }
+
+    $('#btn-numb').click(() => {
+        $('#btn-numb').attr('id', 'btn-selects');
+        $('.ceklist').each((idx, elem) => {
+            $(elem).hide();
+        });
+        $('.no').each((idx, elem) => {
+            $(elem).show();
+        });
+    });
+
+    function convertHTMLtoPDF(data) {
+        const {
+            jsPDF
+        } = window.jspdf;
+
+        let doc = new jsPDF('l', 'mm', [1500, 1400]);
+        let pdfjs = document.querySelector('#divID');
+
+        doc.html(data, {
+            callback: function(doc) {
+                doc.save("Cetak_Nomor_Inventaris.pdf");
+            },
+            x: 12,
+            y: 12
         });
     }
+
+    $('#btnPDF').click(() => {
+
+        let data = [];
+        var params = "";
+
+        $('.custom-control-input').each((idx, elem) => {
+            if ($(elem).is(':checked')) {
+                data.push($(elem).val());
+            }
+        });
+
+        $.ajax({
+            url: "{{url('cetak/pdf')}}",
+            type: 'GET',
+            data: {
+                data: data
+            },
+            success: (element) => {
+                // const win = window.open('about:blank', '_blank');
+                // win.document.write(d);
+                // win.focus();
+
+                // html2pdf().from(element).save();
+                html2pdf()
+                    .set({
+                        html2canvas: {
+                            scale: 4
+                        }
+                    })
+                    .from(element)
+                    .save();
+            }
+        });
+
+    });
 </script>
 @endsection

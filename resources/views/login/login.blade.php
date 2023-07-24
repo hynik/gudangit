@@ -3,7 +3,8 @@
 <div class="row justify-content-center">
     <div class="login-box">
         <div class="login-logo">
-            <a href="#">Sistem Informasi Inventarisasi Barang</a>
+            <!-- <a href="#">Sistem Informasi Inventarisasi Aset TI</a> -->
+            <img src="{{asset('logo.png')}}" alt="">
         </div>
         <div class="card">
             <div class="card-body login-card-body">

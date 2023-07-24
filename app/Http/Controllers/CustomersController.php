@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
+use App\Models\Users;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class CustomersController extends Controller
 {
@@ -15,16 +16,15 @@ class CustomersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-    private $objCustomer;
-
+    protected $redirectTo = RouteServiceProvider::HOME;
     public function __construct()
     {
-        $this->objCustomer = new Customer();
+        $this->middleware('guest')->except('logout');
     }
 
     public function index()
     {
+        return view('');
     }
 
     /**
@@ -54,7 +54,7 @@ class CustomersController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function show(Customer $customer)
+    public function show(Users $customer)
     {
         return view('login.login', [
             'title' => 'Selamat Datang di Halaman Login'
@@ -66,19 +66,22 @@ class CustomersController extends Controller
             'username' => 'required',
             'password' => 'required',
         ]);
-
+        // $credentials['password'] = Hash::make($request->input('password'));
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            $data_user = Users::with(['akses_fitur', 'departement'])->where('username', $request->post('username'))->first();
             session()->push('userCredential', [
-                'nama' => $this->objCustomer->getUserID($request->post('username'))->name,
-                'iduser' => $this->objCustomer->getUserID($request->post('username'))->userid
+                'nama' => $data_user->name,
+                'iduser' => $data_user->userid,
+                'username' => $data_user->username,
+                'id_departement' => $data_user->id_departement,
+                'akses_fitur' => $data_user->akses_fitur->fitur,
             ]);
 
-            return redirect()->intended('home');
+            return redirect()->intended()->with(session()->push('success', 'Selamat Datang '.$credentials['username']));
         }
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        return back()->with(session()->push('error', 'Periksa username atau password anda.'));
 
     }
     /**
@@ -87,7 +90,7 @@ class CustomersController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Customer $customer)
+    public function edit(Users $customer)
     {
         //
     }
@@ -99,7 +102,7 @@ class CustomersController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Customer $customer)
+    public function update(Request $request, Users $customer)
     {
         //
     }
@@ -110,19 +113,16 @@ class CustomersController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
+    public function destroy(Request $request)
     {
         //
-    }
-
-    public function userLogout(Request $request)
-    {
         Auth::logout();
-
+    
         $request->session()->invalidate();
-
+    
         $request->session()->regenerateToken();
-
+    
         return redirect('/');
     }
+
 }

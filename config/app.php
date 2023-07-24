@@ -197,6 +197,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Milon\Barcode\BarcodeServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
@@ -217,6 +218,7 @@ return [
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
     ])->toArray(),
 
 ];

@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class StatusBarang extends Model{
 
-    protected $table = 'status_barang';
-    protected $fillable = ['id_kat', 'id_inventaris', 'id_distribusi', 'userid', 'keterangan', 'update_at'];
+    protected $table = 'status_kondisi_barang';
+    protected $fillable = ['id_kat', 'id_inventaris', 'id_distribusi', 'userid', 'id_status_kondisi', 'keterangan', 'update_at'];
     
     public function barang(){
-        return $this->hasMany(Barang::class, 'id_inventaris', 'id_inventaris');
+        return $this->belongsTo(MasterBarang::class);
     }
 
     public function userDis(){
@@ -22,7 +22,7 @@ class StatusBarang extends Model{
     }
 
     public function katBarang(){
-        return $this->hasMany(KatBarang::class, 'id_kat', 'id_kat');
+        return $this->hasMany(KategoriBarang::class, 'id_kat', 'id_kat');
     }
 
 }
